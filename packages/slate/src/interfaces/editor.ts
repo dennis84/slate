@@ -1534,7 +1534,16 @@ export const Editor = {
       at: end,
       match: n => Editor.isBlock(editor, n),
     })
-    const blockPath = endBlock ? endBlock[1] : []
+
+    if (!endBlock) {
+      return range
+    }
+
+    const [blockNode, blockPath] = endBlock
+    if (Editor.isEmpty(editor, blockNode) || editor.isVoid(blockNode)) {
+      return range
+    }
+
     const first = Editor.start(editor, [])
     const before = { anchor: first, focus: end }
     let skip = true
